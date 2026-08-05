@@ -27,7 +27,7 @@
   </div>
   <div class="container">
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: April 2026</p>
+    <p class="updated">Last updated: August 2026</p>
 
     <p>Planr is operated by Pinnacle Apps (ABN: 25 403 393 572), based in Perth, Western Australia. This Privacy Policy explains how we collect, use, and protect your personal information when you use the Planr app.</p>
     <p>By using Planr, you agree to the collection and use of information in accordance with this policy.</p>
@@ -35,11 +35,11 @@
     <h2>Information We Collect</h2>
     <p>We collect the following types of information:</p>
     <ul>
-      <li><strong>Account information:</strong> Your name, email address, and account type (Solo Athlete, Client, or Coach) when you register.</li>
-      <li><strong>Profile data:</strong> Optional information including your date of birth, height, weight, fitness goal, activity level, and sex — used to calculate personalised nutrition targets and program recommendations.</li>
+      <li><strong>Account information:</strong> Your name, username, email address, date of birth, and account type (Solo Athlete, Client, or Coach) when you register. Date of birth is required at sign-up and is used to verify your age for age-restricted features (see "Age Requirements" below).</li>
+      <li><strong>Profile data:</strong> Optional information including your height, weight, fitness goal, activity level, and sex — used to calculate personalised nutrition targets and program recommendations.</li>
       <li><strong>Training data:</strong> Session logs, exercise names, sets, reps, weight, and RPE values you enter during training sessions.</li>
       <li><strong>Nutrition data:</strong> Food items, calorie and macro logs, and nutrition targets you set or receive from your coach.</li>
-      <li><strong>Body composition data:</strong> Bodyweight entries and physique photos you choose to upload.</li>
+      <li><strong>Body composition data:</strong> Bodyweight entries you log, and physique photos you choose to upload. Physique photo upload is available only to users aged 18 and over (see "Age Requirements" below).</li>
       <li><strong>Coach-client data:</strong> If you are a coach, information about your clients including their training and progress data. If you are a client, your data is accessible to your assigned coach.</li>
       <li><strong>Usage data:</strong> AI feature usage counts (for rate limiting purposes).</li>
       <li><strong>Messages:</strong> Messages sent between coaches and clients within the app.</li>
@@ -58,6 +58,7 @@
 
     <h2>AI Features</h2>
     <p>Planr uses the Anthropic Claude API to power AI features including program generation, session suggestions, meal suggestions, and body composition analysis. When you use these features, relevant data (such as exercise lists, nutrition logs, or physique photos) is sent to Anthropic's API for processing. This data is used only to generate your requested output and is not used to train AI models. Please refer to <a href="https://www.anthropic.com/privacy" target="_blank">Anthropic's Privacy Policy</a> for more information.</p>
+    <p>When you request AI body composition analysis on a physique photo, the photo is sent to Anthropic's API for processing and is then permanently deleted from our storage immediately afterwards — whether the analysis succeeds or fails. Only the resulting text analysis is retained. See "Physique Photos" below for full details on how photos are handled.</p>
 
     <h2>Data Storage</h2>
     <p>Your data is stored securely using Supabase, a cloud database service with servers in the Asia Pacific region. Physique photos are stored in Supabase Storage with private access — only you and your assigned coach (if applicable) can access them.</p>
@@ -72,13 +73,20 @@
     </ul>
 
     <h2>Physique Photos</h2>
-    <p>Photos you upload for body composition tracking are stored privately and are only accessible to you and your assigned coach (if applicable). We do not use your photos for any purpose other than displaying them within the app and generating AI body composition analysis when you explicitly request it.</p>
+    <p>Physique photo upload is available only to users aged 18 and over. Users under 18 can use all other features of Planr but cannot upload physique photos (see "Age Requirements" below).</p>
+    <p>Photos you upload for body composition tracking are stored privately in Supabase Storage and are only accessible to you and your assigned coach (if applicable). We do not use your photos for any purpose other than displaying them within the app and generating AI body composition analysis when you explicitly request it.</p>
+    <p>How long a photo is kept depends on how it is used:</p>
+    <ul>
+      <li><strong>Photos you submit for AI body composition analysis</strong> are sent to Anthropic's API for processing and are then permanently deleted from our storage immediately afterwards, whether the analysis succeeds or fails. Only the resulting text analysis is retained; the image itself is removed.</li>
+      <li><strong>Photos you upload but do not submit for AI analysis</strong> (for example, progress photos for your own tracking or for your coach to view) are retained until you manually delete them, or until you delete your account.</li>
+    </ul>
 
     <h2>Subscriptions and Payments</h2>
     <p>Planr offers paid subscriptions (Planr Pro and Planr Coach). All payment processing is handled by Apple App Store or Google Play Store. We do not store your payment card details. Subscription management is handled via RevenueCat.</p>
 
     <h2>Data Retention</h2>
-    <p>We retain your data for as long as your account is active. If you delete your account, we permanently delete all your personal data including training logs, nutrition data, body metrics, photos, and messages. This process is irreversible.</p>
+    <p>We retain your data for as long as your account is active. Physique photos submitted for AI body composition analysis are an exception — these are deleted from storage immediately after processing (see "Physique Photos" above). Photos not submitted for analysis are retained until you delete them or delete your account.</p>
+    <p>If you delete your account, we permanently delete all your personal data including training logs, nutrition data, body metrics, photos, and messages. This process is irreversible.</p>
 
     <h2>Your Rights</h2>
     <p>Under Australian Privacy Law and other applicable regulations, you have the right to:</p>
@@ -90,8 +98,10 @@
     </ul>
     <p>To exercise these rights, contact us at <a href="mailto:velastudio.app@gmail.com">velastudio.app@gmail.com</a> or use the "Delete my account" option within the app.</p>
 
-    <h2>Children's Privacy</h2>
-    <p>Planr is not intended for use by children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us with personal information, please contact us and we will delete it.</p>
+    <h2>Age Requirements</h2>
+    <p>Planr is intended for users aged 14 and over. We require your date of birth at sign-up and do not knowingly permit registration by anyone under 14. If you believe someone under 14 has created an account, please contact us and we will remove it.</p>
+    <p><strong>Physique photo features are restricted to users aged 18 and over.</strong> We use the date of birth you provide at sign-up to enforce this: users under 18 cannot upload physique photos anywhere in the app, including for their own tracking, for AI body composition analysis, or for sharing with a coach. All other features of Planr — including training and nutrition logging, program following, AI program generation, messaging, and working with a coach — are available to users aged 14 and over regardless of whether they use photo features.</p>
+    <p>If you believe a user under 18 has uploaded a physique photo, please contact us and we will remove it.</p>
 
     <h2>Changes to This Policy</h2>
     <p>We may update this Privacy Policy from time to time. We will notify you of significant changes by updating the date at the top of this page. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
