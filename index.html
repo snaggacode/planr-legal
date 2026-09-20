@@ -1,14 +1,28 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-AU">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Planr — Training and coaching, one app</title>
-<meta name="description" content="Planr is a training app built for lifters first, with a coaching layer on top. Log sets, hit PRs, follow your coach's program, and send form checks for feedback." />
-<meta property="og:title" content="Planr — Training and coaching, one app" />
-<meta property="og:description" content="Log every set. Coach every client. The training app your clients actually open." />
+<title>Planr — Gym and Training App for Lifters and Coaches</title>
+<meta name="description" content="Planr is a gym training app for iPhone: log every set with RPE, track PRs, and follow your coach's program. Personal trainers get programs, form checks and messaging. Free to start." />
+<link rel="canonical" href="https://www.planrfit.com/" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="apple-itunes-app" content="app-id=6761987757" />
+
+<meta property="og:site_name" content="Planr" />
+<meta property="og:locale" content="en_AU" />
+<meta property="og:title" content="Planr — Gym and Training App for Lifters and Coaches" />
+<meta property="og:description" content="Log every set. Coach every client. The gym app your clients actually open." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.planrfit.com/" />
+<!-- Create a 1200x630 image at this path — link previews are blank without it -->
+<meta property="og:image" content="https://www.planrfit.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Planr — Gym and Training App for Lifters and Coaches" />
+<meta name="twitter:description" content="Log every set. Coach every client. The gym app your clients actually open." />
+<meta name="twitter:image" content="https://www.planrfit.com/og-image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,700;0,900;1,900&display=swap" rel="stylesheet" />
@@ -123,10 +137,20 @@
     background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
     padding: 22px 8px 14px; text-align: center;
   }
-  .tile b {
+  .tile b, .tile .num {
     display: block; font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums; min-height: 34px;
   }
+  /* Editable weight: looks exactly like the other numerals until you tap it */
+  .tile input.num {
+    width: 100%; padding: 0; margin: 0; border: 0; background: transparent;
+    color: var(--ink); font-family: inherit; text-align: center;
+    appearance: none; -webkit-appearance: none; border-radius: 6px; cursor: text;
+  }
+  .tile input.num:focus {
+    outline: 2px solid var(--accent); outline-offset: 5px; color: var(--accent);
+  }
+  .tile.editable { cursor: text; }
   .tile span {
     display: block; margin-top: 8px; font-size: 11px; letter-spacing: 0.12em;
     color: var(--ink-3); text-transform: uppercase;
@@ -221,6 +245,13 @@
   .tiers b { color: var(--ink); font-weight: 600; }
   .tiers.note { margin-top: 12px; color: var(--ink-3); font-size: 14px; }
 
+  /* FAQ */
+  .faq { list-style: none; padding: 0; margin: 0; max-width: 72ch; }
+  .faq li { padding: 18px 0; border-top: 1px solid var(--line); }
+  .faq li:first-child { border-top: 0; padding-top: 0; }
+  .faq h3 { font-size: 18px; font-weight: 700; margin: 0 0 6px; }
+  .faq p { margin: 0; color: var(--ink-2); font-size: 16px; }
+
   /* Footer */
   footer { border-top: 1px solid var(--line); padding: 36px 0 48px; color: var(--ink-3); font-size: 14px; }
   footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; justify-content: space-between; }
@@ -277,7 +308,7 @@
     .screen-sub { margin-bottom: 26px; }
     .screen-last { margin: -18px 0 26px; }
     .tiles { gap: 12px; margin-bottom: 22px; }
-    .tile b { font-size: 30px; }
+    .tile b, .tile .num { font-size: 30px; }
     .rpe-row { gap: 5px; margin-bottom: 20px; }
     .rpe-row button { font-size: 12px; padding: 10px 0; }
     .skip { margin-top: 14px; }
@@ -302,6 +333,10 @@
     .plan li { padding: 11px 0; line-height: 1.5; }
     .tiers { margin-top: 30px; line-height: 1.65; }
 
+    .faq li { padding: 16px 0; }
+    .faq h3 { font-size: 17px; margin-bottom: 8px; }
+    .faq p { line-height: 1.6; }
+
     footer { padding: 32px 0 44px; }
     footer .wrap { flex-direction: column; align-items: flex-start; gap: 16px; }
     footer nav { gap: 20px; flex-wrap: wrap; }
@@ -315,12 +350,67 @@
     .rpe-row { gap: 4px; }
     .rpe-row button { font-size: 11px; padding: 9px 0; }
     .tile { padding: 18px 4px 12px; }
-    .tile b { font-size: 26px; }
+    .tile b, .tile .num { font-size: 26px; }
     .plan { padding: 24px 18px; }
     .plan .price { font-size: 30px; }
   }
 
 </style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.planrfit.com/#org",
+      "name": "Planr",
+      "legalName": "Pinnacle Enterprises Group Pty Ltd",
+      "url": "https://www.planrfit.com/",
+      "areaServed": "Worldwide",
+      "sameAs": ["https://apps.apple.com/app/id6761987757"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.planrfit.com/#website",
+      "name": "Planr",
+      "alternateName": ["Planr Fit", "Planr app", "Planr gym app"],
+      "url": "https://www.planrfit.com/",
+      "inLanguage": "en-AU",
+      "publisher": { "@id": "https://www.planrfit.com/#org" }
+    },
+    {
+      "@type": "MobileApplication",
+      "@id": "https://www.planrfit.com/#app",
+      "name": "Planr",
+      "alternateName": "Planr — training and coaching",
+      "applicationCategory": "HealthApplication",
+      "applicationSubCategory": "Fitness",
+      "operatingSystem": "iOS",
+      "url": "https://www.planrfit.com/",
+      "installUrl": "https://apps.apple.com/app/id6761987757",
+      "description": "Planr is a gym training app for iPhone. Log every set with weight, reps and RPE, track PRs and session history, follow a coach's program, and send form check videos from the set you logged. Coaches get a program builder, demo video library, client dashboard and messaging.",
+      "featureList": [
+        "Set logging with weight, reps and RPE",
+        "Automatic PR detection and session summaries",
+        "Structured training programs",
+        "Nutrition tracking with AI macro estimates",
+        "Progress photos and body composition",
+        "Program builder and demo video library for coaches",
+        "Form check videos with in-app coach feedback"
+      ],
+      "publisher": { "@id": "https://www.planrfit.com/#org" },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "AUD",
+        "lowPrice": "0",
+        "highPrice": "169.99",
+        "offerCount": "5"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -332,7 +422,7 @@
 <main>
   <section class="wrap hero">
     <div>
-      <h1>The training app your clients actually open.</h1>
+      <h1>The gym app your clients actually open.</h1>
       <p>Planr is built for the lifter first. Log every set on a screen with nothing else on it. Coaches get programs, form checks and messaging on top — so clients train in an app they'd choose anyway.</p>
       <div class="hero-actions">
         <a class="btn" href="https://apps.apple.com/app/id6761987757">Download on the App Store</a>
@@ -349,7 +439,7 @@
       <div class="tiles">
         <div class="tile-col">
           <button class="step" data-adj="kg" data-d="2.5" aria-label="Increase weight">+</button>
-          <div class="tile"><b id="kg">90</b><span>kg</span></div>
+          <div class="tile editable"><input id="kg" class="num" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" aria-label="Weight in kilograms, tap to type" value="90" /><span>kg</span></div>
           <button class="step" data-adj="kg" data-d="-2.5" aria-label="Decrease weight">−</button>
         </div>
         <div class="tile-col">
@@ -388,7 +478,7 @@
 
   <section class="section" id="athletes">
     <div class="wrap">
-      <h2>Built for people who train.</h2>
+      <h2>A gym app built for people who train.</h2>
       <p class="lead">Most coaching platforms treat the client app as an afterthought. Planr started as the athlete's app, and the coaching layer came second.</p>
       <div class="two">
         <div>
@@ -463,6 +553,37 @@
       <p class="tiers note">Outside Australia, the App Store charges you in your local currency at Apple's equivalent price point, so the exact figure you see at checkout may differ slightly.</p>
     </div>
   </section>
+  <section class="section" id="faq">
+    <div class="wrap">
+      <h2>Questions about Planr</h2>
+      <ul class="faq">
+        <li>
+          <h3>What is Planr?</h3>
+          <p>Planr is a gym training app for iPhone. You log every set — weight, reps and RPE — on a screen with nothing else on it, and Planr tracks your PRs, session history and programs. Coaches can run their clients from the same app.</p>
+        </li>
+        <li>
+          <h3>Is Planr free?</h3>
+          <p>Yes. Set logging with RPE, session history, PR tracking and up to three programs are free forever. Pro is $7.99 AUD a month and adds nutrition tracking, progress photos, unlimited programs and AI suggestions.</p>
+        </li>
+        <li>
+          <h3>Can personal trainers use Planr to coach clients?</h3>
+          <p>Yes. Coach plans include a program builder, a demo video library, a client dashboard, messaging and form check videos. Your first client is free with no trial clock, and paid tiers start at $44.99 AUD a month for up to five clients.</p>
+        </li>
+        <li>
+          <h3>How is Planr different from other gym apps?</h3>
+          <p>Most coaching platforms are built for the coach, and the client app is an afterthought. Planr started as the athlete's app. Clients send a form check from the exact set they logged, and the coach replies on that set instead of hunting through a chat thread.</p>
+        </li>
+        <li>
+          <h3>Is Planr on Android?</h3>
+          <p>Not yet. Planr is iPhone only for now.</p>
+        </li>
+        <li>
+          <h3>Who makes Planr?</h3>
+          <p>Planr is built in Perth, Western Australia by Pinnacle Enterprises Group Pty Ltd.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -489,10 +610,11 @@
     const setsEl = $('sets'), foot = $('foot'), done = $('done');
     const rpeRow = document.querySelector('.rpe-row');
 
-    const fmt = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1).replace(/\.0$/, ''));
+    const fmt = (n) => (Number.isInteger(n) ? String(n) : String(parseFloat(n.toFixed(2))));
 
     function render() {
-      kgEl.textContent = fmt(kg);
+      // Don't overwrite what someone is part-way through typing
+      if (document.activeElement !== kgEl) kgEl.value = fmt(kg);
       repsEl.textContent = String(reps);
       rpeEl.textContent = rpe == null ? '–' : fmt(rpe);
       rpeRow.querySelectorAll('button').forEach(b => b.classList.toggle('on', parseFloat(b.dataset.rpe) === rpe));
@@ -504,7 +626,7 @@
     }
 
     function adjust(field, d) {
-      if (field === 'kg') kg = Math.max(0, Math.round((kg + d) * 2) / 2);
+      if (field === 'kg') kg = Math.max(0, Math.round((kg + d) * 4) / 4);
       else reps = Math.max(0, reps + d);
       render();
     }
@@ -579,6 +701,22 @@
       render();
     }
 
+    // Tap the weight to type one in; the decimal pad comes up on mobile.
+    function commitKg() {
+      const v = parseFloat(String(kgEl.value).replace(',', '.'));
+      if (!Number.isNaN(v)) kg = Math.min(999, Math.max(0, Math.round(v * 4) / 4)); // 0.25kg steps, micro plates included
+      kgEl.value = fmt(kg);
+      render();
+    }
+    kgEl.addEventListener('focus', () => kgEl.select());
+    kgEl.addEventListener('blur', commitKg);
+    kgEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); kgEl.blur(); }
+    });
+    kgEl.closest('.tile').addEventListener('click', (e) => {
+      if (e.target !== kgEl) kgEl.focus();
+    });
+
     document.querySelectorAll('.step[data-adj]').forEach(b =>
       b.addEventListener('click', () => adjust(b.dataset.adj, parseFloat(b.dataset.d))));
     rpeRow.addEventListener('click', (e) => {
@@ -595,6 +733,62 @@
 
     render();
   })();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Planr?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Planr is a gym training app for iPhone. You log every set with weight, reps and RPE on a screen with nothing else on it, and Planr tracks your PRs, session history and programs. Coaches can run their clients from the same app."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Planr free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Set logging with RPE, session history, PR tracking and up to three programs are free forever. Pro is $7.99 AUD a month and adds nutrition tracking, progress photos, unlimited programs and AI suggestions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can personal trainers use Planr to coach clients?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Coach plans include a program builder, a demo video library, a client dashboard, messaging and form check videos. The first client is free with no trial clock, and paid tiers start at $44.99 AUD a month for up to five clients."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Planr different from other gym apps?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Planr started as the athlete's app rather than as a coaching dashboard. Clients send a form check from the exact set they logged, and the coach replies on that set instead of hunting through a chat thread."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Planr on Android?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not yet. Planr is iPhone only for now."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who makes Planr?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Planr is built in Perth, Western Australia by Pinnacle Enterprises Group Pty Ltd."
+      }
+    }
+  ]
+}
 </script>
 </body>
 </html>
