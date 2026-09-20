@@ -1,11 +1,600 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=https://apps.apple.com/au/app/planr/id6761987757">
-  <link rel="canonical" href="https://apps.apple.com/au/app/planr/id6761987757">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Planr — Training and coaching, one app</title>
+<meta name="description" content="Planr is a training app built for lifters first, with a coaching layer on top. Log sets, hit PRs, follow your coach's program, and send form checks for feedback." />
+<meta property="og:title" content="Planr — Training and coaching, one app" />
+<meta property="og:description" content="Log every set. Coach every client. The training app your clients actually open." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.planrfit.com/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,700;0,900;1,900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --line: #1c1c1c;
+    --ink: #ffffff;
+    --ink-2: #999999;
+    --ink-3: #555555;
+    --accent: #e8ff47;
+    --accent-ink: #0a0a0a;
+    --radius: 14px;
+    --max: 1080px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Archivo", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  /* Nav */
+  /* .nav sits on the same element as .wrap, so it must never use the padding
+     shorthand — that would reset the horizontal gutters to zero. */
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 22px; padding-bottom: 22px;
+  }
+  .wordmark {
+    font-weight: 900; font-style: italic; font-size: 26px; letter-spacing: -0.02em;
+    color: var(--accent); text-decoration: none; line-height: 1;
+  }
+  .nav-link {
+    font-size: 15px; font-weight: 500; color: var(--ink-2); text-decoration: none;
+  }
+  .nav-link:hover { color: var(--ink); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 52px; padding: 0 22px;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 700; font-size: 16px; text-decoration: none;
+    border-radius: var(--radius); border: 0; cursor: pointer;
+  }
+  .btn:hover { filter: brightness(1.06); }
+  .btn.quiet {
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn.quiet:hover { border-color: var(--ink-3); filter: none; }
+
+  /* Hero */
+  /* Same rule as .nav: .hero shares its element with .wrap, so vertical
+     longhands only. */
+  .hero {
+    display: grid; gap: 40px;
+    padding-top: 56px; padding-bottom: 72px;
+    align-items: center;
+  }
+  @media (min-width: 820px) {
+    .hero { grid-template-columns: 1.05fr 0.95fr; gap: 56px; padding-top: 88px; padding-bottom: 104px; }
+  }
+  .hero h1 {
+    font-weight: 900; letter-spacing: -0.03em; line-height: 1.02;
+    font-size: clamp(40px, 7vw, 68px);
+    margin: 0 0 20px;
+  }
+  .hero p {
+    color: var(--ink-2); font-size: 18px; max-width: 46ch; margin: 0 0 30px;
+  }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-note { margin: 16px 0 0; font-size: 14px; color: var(--ink-3); }
+
+  /* The logging screen, rebuilt */
+  .screen {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 28px 22px 22px;
+    max-width: 420px;
+    justify-self: center;
+    width: 100%;
+  }
+  .screen-title { font-weight: 700; font-size: 22px; margin: 0 0 4px; }
+  .screen-sub {
+    color: var(--ink-3); font-size: 14px; margin: 0 0 22px;
+    display: flex; flex-wrap: wrap; gap: 2px 14px; justify-content: space-between;
+  }
+  .screen-last { color: var(--ink-2); font-size: 14px; margin: -16px 0 22px; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+  .tile-col { display: grid; gap: 6px; justify-items: stretch; }
+  .step {
+    height: 30px; border: 0; background: transparent; color: var(--ink-3);
+    font-family: inherit; font-size: 22px; font-weight: 500; line-height: 1; cursor: pointer; border-radius: 8px;
+  }
+  .step:hover { color: var(--ink); }
+  .step:active { color: var(--accent); }
+  .step.ghost { visibility: hidden; }
+  .tile {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 22px 8px 14px; text-align: center;
+  }
+  .tile b {
+    display: block; font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums; min-height: 34px;
+  }
+  .tile span {
+    display: block; margin-top: 8px; font-size: 11px; letter-spacing: 0.12em;
+    color: var(--ink-3); text-transform: uppercase;
+  }
+  .rpe-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 16px; }
+  .rpe-row button {
+    font-family: inherit; font-size: 13px; color: var(--ink-3); background: transparent;
+    border: 1px solid var(--line); border-radius: 8px; padding: 9px 0; cursor: pointer;
+  }
+  .rpe-row button:hover { color: var(--ink-2); }
+  .rpe-row button.on { color: var(--accent); border-color: var(--accent); }
+  .rpe-row.shake { animation: shake 260ms ease; }
+  @keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+  .log {
+    width: 100%; height: 50px; border: 0; border-radius: var(--radius);
+    background: var(--accent); color: var(--accent-ink); font-family: inherit;
+    font-weight: 700; font-size: 17px; cursor: pointer;
+  }
+  .log:hover { filter: brightness(1.06); }
+  .skip {
+    display: block; width: 100%; margin-top: 10px; background: transparent; border: 0;
+    color: var(--ink-3); font-family: inherit; font-size: 15px; font-weight: 500; cursor: pointer; padding: 8px;
+  }
+  .skip:hover { color: var(--ink-2); }
+  .sets { list-style: none; padding: 0; margin: 14px 0 0; }
+  .sets li {
+    display: flex; align-items: baseline; gap: 12px; padding: 12px 0;
+    border-top: 1px solid var(--line); font-size: 15px; color: var(--ink-2);
+    animation: rise 220ms ease;
+  }
+  .sets li:first-child { border-top: 0; }
+  .sets li .n { color: var(--ink-3); width: 44px; }
+  .sets li .v { color: var(--ink); font-weight: 500; }
+  .sets li .r { margin-left: auto; }
+  .sets li.skipped .v { color: var(--ink-3); font-weight: 400; font-style: italic; }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+  .screen-foot {
+    display: flex; justify-content: space-between; margin-top: 8px; padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .link {
+    background: transparent; border: 0; padding: 6px 0; font-family: inherit;
+    font-size: 15px; font-weight: 500; color: var(--ink-2); cursor: pointer;
+  }
+  .link:hover { color: var(--ink); }
+  .link.danger { color: #ff4444; }
+  .done { text-align: center; padding: 18px 0 6px; }
+  .done-title { font-weight: 900; font-size: 22px; letter-spacing: -0.02em; margin: 0 0 6px; }
+  .done-stats { color: var(--ink-2); margin: 0 0 12px; }
+  .done-stats b { color: var(--accent); font-weight: 900; font-size: 24px; }
+  .done-stats span { display: block; margin-top: 4px; font-size: 14px; }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) {
+    .sets li { animation: none; }
+    .rpe-row.shake { animation: none; }
+  }
+
+  /* Sections */
+  .section { padding: 64px 0; border-top: 1px solid var(--line); }
+  .section h2 {
+    font-weight: 900; letter-spacing: -0.025em; line-height: 1.05;
+    font-size: clamp(30px, 4.5vw, 44px); margin: 0 0 12px;
+  }
+  .section > .wrap > p.lead { color: var(--ink-2); max-width: 56ch; margin: 0 0 40px; font-size: 18px; }
+
+  .two { display: grid; gap: 40px; }
+  @media (min-width: 760px) { .two { grid-template-columns: 1fr 1fr; gap: 56px; } }
+  .two h3 { font-size: 22px; font-weight: 700; margin: 0 0 14px; }
+  .two ul { list-style: none; padding: 0; margin: 0; }
+  .two li {
+    padding: 12px 0; border-top: 1px solid var(--line); color: var(--ink);
+  }
+  .two li:first-child { border-top: 0; padding-top: 0; }
+  .two li small { display: block; color: var(--ink-2); font-size: 15px; margin-top: 2px; }
+
+  /* Pricing */
+  .plans { display: grid; gap: 14px; }
+  @media (min-width: 760px) { .plans { grid-template-columns: repeat(3, 1fr); } }
+  .plan {
+    border: 1px solid var(--line); border-radius: 20px; padding: 26px 24px;
+    display: flex; flex-direction: column;
+  }
+  .plan.featured { border-color: var(--accent); }
+  .plan h3 { margin: 0 0 4px; font-size: 20px; font-weight: 700; }
+  .plan .price { font-weight: 900; font-size: 34px; letter-spacing: -0.02em; line-height: 1.1; margin: 8px 0 2px; }
+  .plan .price small { font-size: 15px; font-weight: 500; color: var(--ink-2); letter-spacing: 0; }
+  .plan .for { color: var(--ink-2); font-size: 15px; margin: 0 0 18px; }
+  .plan ul { list-style: none; padding: 0; margin: 0 0 22px; flex: 1; }
+  .plan li { padding: 7px 0; font-size: 15px; border-top: 1px solid var(--line); }
+  .plan li:first-child { border-top: 0; }
+  .tiers { margin-top: 26px; color: var(--ink-2); font-size: 15px; max-width: 64ch; }
+  .tiers b { color: var(--ink); font-weight: 600; }
+  .tiers.note { margin-top: 12px; color: var(--ink-3); font-size: 14px; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--line); padding: 36px 0 48px; color: var(--ink-3); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; justify-content: space-between; }
+  footer nav { display: flex; gap: 22px; }
+  footer a { color: var(--ink-2); text-decoration: none; }
+  footer a:hover { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  /* ---- Mobile refinements ---- */
+
+  /* Gutters live only on .wrap, as horizontal longhands, so any rule that
+     shares an element with .wrap can't wipe them out with a shorthand.
+     env() keeps an explicit 0px fallback — without one, a browser that doesn't
+     define the variable drops the declaration to its initial value. */
+  .wrap {
+    width: 100%;
+    padding-left: max(24px, env(safe-area-inset-left, 0px));
+    padding-right: max(24px, env(safe-area-inset-right, 0px));
+  }
+
+  /* Nothing should be able to push the page wider than the screen */
+  html, body { max-width: 100%; overflow-x: hidden; }
+  h1, h2, h3, p, li { overflow-wrap: break-word; }
+
+  @media (max-width: 600px) {
+    body { font-size: 16px; line-height: 1.62; }
+    .wrap {
+      padding-left: max(20px, env(safe-area-inset-left, 0px));
+      padding-right: max(20px, env(safe-area-inset-right, 0px));
+    }
+    .nav { padding-top: 20px; padding-bottom: 20px; gap: 16px; }
+    .wordmark { font-size: 23px; }
+    .nav-link { flex: 0 0 auto; white-space: nowrap; }
+
+    /* Hero: more air between the headline, the paragraph and the buttons */
+    .hero { padding-top: 40px; padding-bottom: 64px; gap: 44px; }
+    .hero h1 {
+      font-size: clamp(31px, 8.6vw, 42px);
+      line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 22px;
+    }
+    .hero p { font-size: 16px; line-height: 1.68; margin-bottom: 32px; max-width: none; }
+    .hero-note { margin-top: 20px; }
+
+    /* Buttons go full width and stack so they never overflow or sit half off-screen */
+    .hero-actions { flex-direction: column; gap: 12px; align-items: stretch; }
+    .hero-actions .btn { width: 100%; height: 56px; }
+
+    /* Demo card */
+    .screen { padding: 26px 20px 22px; border-radius: 20px; }
+    .screen-title { font-size: 21px; margin-bottom: 6px; }
+    .screen-sub { margin-bottom: 26px; }
+    .screen-last { margin: -18px 0 26px; }
+    .tiles { gap: 12px; margin-bottom: 22px; }
+    .tile b { font-size: 30px; }
+    .rpe-row { gap: 5px; margin-bottom: 20px; }
+    .rpe-row button { font-size: 12px; padding: 10px 0; }
+    .skip { margin-top: 14px; }
+
+    /* Sections: looser headings, leads and list rows */
+    .section { padding: 60px 0; }
+    .section h2 { line-height: 1.14; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .section > .wrap > p.lead { font-size: 16px; line-height: 1.65; margin-bottom: 34px; }
+
+    .two { gap: 44px; }
+    .two h3 { font-size: 21px; margin-bottom: 18px; }
+    .two li { padding: 15px 0; line-height: 1.55; }
+    .two li:first-child { padding-top: 0; }
+    .two li small { line-height: 1.55; margin-top: 6px; }
+
+    .plans { gap: 16px; }
+    .plan { padding: 26px 22px; }
+    .plan h3 { margin-bottom: 6px; }
+    .plan .price { margin: 10px 0 4px; }
+    .plan .for { margin-bottom: 22px; }
+    .plan ul { margin-bottom: 26px; }
+    .plan li { padding: 11px 0; line-height: 1.5; }
+    .tiers { margin-top: 30px; line-height: 1.65; }
+
+    footer { padding: 32px 0 44px; }
+    footer .wrap { flex-direction: column; align-items: flex-start; gap: 16px; }
+    footer nav { gap: 20px; flex-wrap: wrap; }
+  }
+  @media (max-width: 360px) {
+    .wrap {
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
+    }
+    .screen { padding: 22px 16px 20px; }
+    .rpe-row { gap: 4px; }
+    .rpe-row button { font-size: 11px; padding: 9px 0; }
+    .tile { padding: 18px 4px 12px; }
+    .tile b { font-size: 26px; }
+    .plan { padding: 24px 18px; }
+    .plan .price { font-size: 30px; }
+  }
+
+</style>
 </head>
 <body>
-  <p>Redirecting to <a href="https://apps.apple.com/au/app/planr/id6761987757">Planr on the App Store</a>...</p>
+
+<header class="wrap nav">
+  <a class="wordmark" href="/">PLANR.</a>
+  <a class="nav-link" href="https://apps.apple.com/app/id6761987757">Get the app</a>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <div>
+      <h1>The training app your clients actually open.</h1>
+      <p>Planr is built for the lifter first. Log every set on a screen with nothing else on it. Coaches get programs, form checks and messaging on top — so clients train in an app they'd choose anyway.</p>
+      <div class="hero-actions">
+        <a class="btn" href="https://apps.apple.com/app/id6761987757">Download on the App Store</a>
+        <a class="btn quiet" href="#coaches">For coaches</a>
+      </div>
+      <p class="hero-note">Free to start. iPhone only for now.</p>
+    </div>
+
+    <div class="screen" id="demo" aria-label="Try the Planr set logging screen">
+      <p class="screen-title">Barbell Back Squat</p>
+      <p class="screen-sub"><span id="prescribed">Prescribed: 5 reps @ RPE 8</span> <span id="setcount">Set 1 of 4</span></p>
+      <p class="screen-last" id="last">Last: 87.5kg × 5 @ RPE 8</p>
+
+      <div class="tiles">
+        <div class="tile-col">
+          <button class="step" data-adj="kg" data-d="2.5" aria-label="Increase weight">+</button>
+          <div class="tile"><b id="kg">90</b><span>kg</span></div>
+          <button class="step" data-adj="kg" data-d="-2.5" aria-label="Decrease weight">−</button>
+        </div>
+        <div class="tile-col">
+          <button class="step" data-adj="reps" data-d="1" aria-label="Increase reps">+</button>
+          <div class="tile"><b id="reps">5</b><span>reps</span></div>
+          <button class="step" data-adj="reps" data-d="-1" aria-label="Decrease reps">−</button>
+        </div>
+        <div class="tile-col">
+          <span class="step ghost" aria-hidden="true"></span>
+          <div class="tile"><b id="rpe">–</b><span>rpe</span></div>
+          <span class="step ghost" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="rpe-row" role="radiogroup" aria-label="RPE">
+        <button data-rpe="6">6</button><button data-rpe="7">7</button><button data-rpe="7.5">7.5</button><button data-rpe="8">8</button><button data-rpe="8.5">8.5</button><button data-rpe="9">9</button><button data-rpe="10">10</button>
+      </div>
+
+      <button class="log" id="logbtn">Log Set</button>
+      <button class="skip" id="skipbtn">Skip set</button>
+
+      <ol class="sets" id="sets" aria-live="polite"></ol>
+
+      <div class="screen-foot" id="foot" hidden>
+        <button class="link" id="undobtn">Undo last set</button>
+        <button class="link danger" id="restartbtn">Restart</button>
+      </div>
+
+      <div class="done" id="done" hidden>
+        <p class="done-title">Exercise complete</p>
+        <p class="done-stats"><b id="vol">0</b> kg volume <span id="prflag"></span></p>
+        <button class="link" id="restartbtn2">Train again</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="athletes">
+    <div class="wrap">
+      <h2>Built for people who train.</h2>
+      <p class="lead">Most coaching platforms treat the client app as an afterthought. Planr started as the athlete's app, and the coaching layer came second.</p>
+      <div class="two">
+        <div>
+          <h3>For athletes</h3>
+          <ul>
+            <li>Log weight, reps and RPE on a black screen with nothing but the numbers <small>No feed, no ads, no distractions mid-set.</small></li>
+            <li>PRs detected automatically, with a session summary when you finish</li>
+            <li>Structured programs, or just log as you go</li>
+            <li>Nutrition tracking with AI macro estimates from a photo of your plate <small>Pro</small></li>
+            <li>Progress photos and body composition over time <small>Pro</small></li>
+          </ul>
+        </div>
+        <div id="coaches">
+          <h3>For coaches</h3>
+          <ul>
+            <li>Build programs by hand, or generate a draft with AI and edit it</li>
+            <li>Record demo videos once and attach them to any exercise</li>
+            <li>Clients send form check videos from the set they logged; you reply on that set <small>Both of you get notified. Nothing gets lost in a chat thread.</small></li>
+            <li>Every client's sessions, PRs and nutrition in one place</li>
+            <li>Your first client is free, with no trial clock <small>Pay when you add a second.</small></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing">
+    <div class="wrap">
+      <h2>Pricing</h2>
+      <p class="lead">All prices in Australian dollars (AUD), billed through the App Store. Annual plans save about two months.</p>
+      <div class="plans">
+        <div class="plan">
+          <h3>Free</h3>
+          <p class="price">$0 <small>AUD</small></p>
+          <p class="for">For logging your training</p>
+          <ul>
+            <li>Set logging with RPE</li>
+            <li>Session history</li>
+            <li>PR tracking</li>
+            <li>Up to 3 programs</li>
+          </ul>
+          <a class="btn quiet" href="https://apps.apple.com/app/id6761987757">Download</a>
+        </div>
+        <div class="plan featured">
+          <h3>Pro</h3>
+          <p class="price">$7.99 <small>AUD / month</small></p>
+          <p class="for">For serious solo training</p>
+          <ul>
+            <li>Everything in Free</li>
+            <li>Nutrition tracking and AI food photo estimates</li>
+            <li>Progress photos and body composition</li>
+            <li>Unlimited programs and full history</li>
+            <li>AI program and session suggestions</li>
+          </ul>
+          <a class="btn" href="https://apps.apple.com/app/id6761987757">Start with Pro</a>
+        </div>
+        <div class="plan">
+          <h3>Coach</h3>
+          <p class="price">From $44.99 <small>AUD / month</small></p>
+          <p class="for">For coaching clients</p>
+          <ul>
+            <li>Everything in Pro</li>
+            <li>Program builder and demo video library</li>
+            <li>Client dashboard and messaging</li>
+            <li>Form check videos with in-app feedback</li>
+            <li>First client free, forever</li>
+          </ul>
+          <a class="btn quiet" href="https://apps.apple.com/app/id6761987757">Start coaching</a>
+        </div>
+      </div>
+      <p class="tiers">Coach plans scale with your roster: <b>Coach 5</b> for up to 5 clients at $44.99, <b>Coach 20</b> at $99.99, <b>Coach 50</b> at $169.99, all in AUD. Upgrade when you outgrow a tier; your existing clients stay connected.</p>
+      <p class="tiers note">Outside Australia, the App Store charges you in your local currency at Apple's equivalent price point, so the exact figure you see at checkout may differ slightly.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Pinnacle Enterprises Group Pty Ltd</span>
+    <nav>
+      <a href="https://www.planrfit.com/privacy.html">Privacy</a>
+      <a href="https://www.planrfit.com/terms.html">Terms</a>
+      <a href="https://apps.apple.com/app/id6761987757">App Store</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // Interactive demo of the logging screen. Nothing is saved; it lives in this tab.
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const TOTAL = 4, PRESCRIBED_REPS = 5, PRESCRIBED_RPE = 8, PREV_BEST = 90 * 5; // volume for one set at last session's top weight
+
+    let kg = 90, reps = PRESCRIBED_REPS, rpe = null, set = 1;
+    const logged = [];
+
+    const kgEl = $('kg'), repsEl = $('reps'), rpeEl = $('rpe');
+    const setsEl = $('sets'), foot = $('foot'), done = $('done');
+    const rpeRow = document.querySelector('.rpe-row');
+
+    const fmt = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1).replace(/\.0$/, ''));
+
+    function render() {
+      kgEl.textContent = fmt(kg);
+      repsEl.textContent = String(reps);
+      rpeEl.textContent = rpe == null ? '–' : fmt(rpe);
+      rpeRow.querySelectorAll('button').forEach(b => b.classList.toggle('on', parseFloat(b.dataset.rpe) === rpe));
+      const remaining = set <= TOTAL;
+      $('setcount').textContent = remaining ? `Set ${set} of ${TOTAL}` : `${TOTAL} of ${TOTAL} done`;
+      foot.hidden = logged.length === 0;
+      const last = logged.filter(l => !l.skipped).slice(-1)[0];
+      $('last').textContent = last ? `Last: ${fmt(last.kg)}kg × ${last.reps} @ RPE ${fmt(last.rpe)}` : 'Last: 87.5kg × 5 @ RPE 8';
+    }
+
+    function adjust(field, d) {
+      if (field === 'kg') kg = Math.max(0, Math.round((kg + d) * 2) / 2);
+      else reps = Math.max(0, reps + d);
+      render();
+    }
+
+    function addRow(entry) {
+      const li = document.createElement('li');
+      if (entry.skipped) {
+        li.className = 'skipped';
+        li.innerHTML = `<span class="n">Set ${entry.set}</span><span class="v">Skipped</span>`;
+      } else {
+        li.innerHTML = `<span class="n">Set ${entry.set}</span><span class="v">${fmt(entry.kg)}kg × ${entry.reps}</span><span class="r">RPE ${fmt(entry.rpe)}</span>`;
+      }
+      setsEl.appendChild(li);
+    }
+
+    function finish() {
+      const vol = logged.filter(l => !l.skipped).reduce((a, l) => a + l.kg * l.reps, 0);
+      $('vol').textContent = fmt(vol);
+      const best = Math.max(0, ...logged.filter(l => !l.skipped).map(l => l.kg));
+      $('prflag').textContent = best > 90 ? `New PR — ${fmt(best)}kg` : '';
+      document.querySelector('.tiles').hidden = true;
+      rpeRow.hidden = true;
+      $('logbtn').hidden = true;
+      $('skipbtn').hidden = true;
+      foot.hidden = true;
+      done.hidden = false;
+    }
+
+    function logSet() {
+      if (set > TOTAL) return;
+      if (rpe == null) {
+        rpeRow.classList.remove('shake'); void rpeRow.offsetWidth; rpeRow.classList.add('shake');
+        return;
+      }
+      const entry = { set, kg, reps, rpe };
+      logged.push(entry);
+      addRow(entry);
+      set += 1;
+      rpe = null; // RPE resets between sets; weight and reps carry over
+      render();
+      if (set > TOTAL) finish();
+    }
+
+    function skipSet() {
+      if (set > TOTAL) return;
+      const entry = { set, skipped: true };
+      logged.push(entry);
+      addRow(entry);
+      set += 1;
+      rpe = null;
+      render();
+      if (set > TOTAL) finish();
+    }
+
+    function undo() {
+      if (!logged.length) return;
+      logged.pop();
+      setsEl.lastElementChild?.remove();
+      set -= 1;
+      render();
+    }
+
+    function restart() {
+      logged.length = 0;
+      setsEl.innerHTML = '';
+      kg = 90; reps = PRESCRIBED_REPS; rpe = null; set = 1;
+      document.querySelector('.tiles').hidden = false;
+      rpeRow.hidden = false;
+      $('logbtn').hidden = false;
+      $('skipbtn').hidden = false;
+      done.hidden = true;
+      render();
+    }
+
+    document.querySelectorAll('.step[data-adj]').forEach(b =>
+      b.addEventListener('click', () => adjust(b.dataset.adj, parseFloat(b.dataset.d))));
+    rpeRow.addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-rpe]');
+      if (!b) return;
+      rpe = parseFloat(b.dataset.rpe);
+      render();
+    });
+    $('logbtn').addEventListener('click', logSet);
+    $('skipbtn').addEventListener('click', skipSet);
+    $('undobtn').addEventListener('click', undo);
+    $('restartbtn').addEventListener('click', restart);
+    $('restartbtn2').addEventListener('click', restart);
+
+    render();
+  })();
+</script>
 </body>
 </html>
